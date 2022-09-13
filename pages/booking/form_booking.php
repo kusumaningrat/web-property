@@ -2,7 +2,7 @@
 include('../../database/db.php');
 
 $id = $_GET['id'];
-$result = mysqli_query($db, "SELECT * FROM detail_perumahan WHERE id = '$id'");
+$result = mysqli_query($db, "SELECT * FROM tbl_detail_perumahan WHERE id = '$id'");
 $row = mysqli_fetch_assoc($result);
 
 
@@ -50,7 +50,7 @@ $row = mysqli_fetch_assoc($result);
           <a class="nav-link" href="#">BERITA</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="controller/users/logout.php">LOGOUT</a>
+          <a class="nav-link" href="../../controller/users/logout.php">LOGOUT</a>
         </li>
       </ul>
     </div>
@@ -69,7 +69,7 @@ $row = mysqli_fetch_assoc($result);
           <label class="form-label" for="kode_blok">
             Kode Blok
           </label>
-          <input type="text" id="kode_blok" name="kode_blok" class="form-control" value="<?= $row['kode_blok'] ?>" readonly/>
+          <input type="text" id="kode_blok" name="kode_blok" class="form-control" value="<?= $row['id'] ?>" readonly/>
         </div>
 
         <div class="form-outline mb-4">

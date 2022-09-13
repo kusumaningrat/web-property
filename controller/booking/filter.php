@@ -1,12 +1,16 @@
 <?php
-include('../../database/db.php');
-if(isset($_POST['pilih'])) {
 
-    $blok = $_GET['blok'];
-    $blokA = mysqli_query($db, "SELECT * FROM detail perumahan WHERE blok = '$blok' ");
+    $db = mysqli_connect("localhost","root","","property");
 
-    var_dump($blokA);
+    $sql = mysqli_query($db, "SELECT MAX(nama) as maxID from tbl_detail_perumahan");
+    $data = mysqli_fetch_array($sql);
 
-}
+    $kode = $data['maxID'];
+
+    $kode++;
+    $ket = "";
+    $kodeauto = $ket . sprintf("%01s",$kode);
+
+    $kodeauto;
 
 ?>

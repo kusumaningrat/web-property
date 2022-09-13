@@ -1,8 +1,6 @@
 <?php
  require('../../database/db.php');
 
- $blok_perumahan = mysqli_query($db, "SELECT * FROM tbl_perumahan");
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,84 +45,107 @@
                     <a class="nav-link" href="#">BERITA</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="controller/users/logout.php">LOGOUT</a>
+                    <a class="nav-link" href="../../controller/users/logout.php">LOGOUT</a>
                 </li>
             </ul>
         </div>
     </nav>
-    <div class="container">
-        <section class="main-left">
-            <img src="../../assets/img/commons/img1.png" alt="" class="imgs" style="margin-right: 50px;">
-        </section>  
-        <section class="main-right">
-            <br>
-            <h4>Data Perumahan</h4>
+    <div class="container" >
+    <section class="main-left">
+        <img src="../../assets/img/commons/img1.png" alt="" class="imgs">
+    </section>
+    <section class="main-right">
+        <br>
+        <h4>Menampilkan Data Perumahan</h4>
 
-            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="GET">
-                <div class="form-group">
-                    <label for="sel1">Select Blok</label>
-                    <select class="form-control" name="nama_blok">
-                        <?php
-
-                        $no = 0;
-                        while ($data = mysqli_fetch_array($blok_perumahan)) {
-                            $no++;
-
-                            $ket = "";
-                            if (isset($_GET['nama_blok'])) {
-                                $perumahan = trim($_GET['kode_perumahan']);
-
-                                if ($perumahan == $data['kode_perumahan']) {
-                                    $ket = "selected";
-                                }
-                            }
-                        ?>
-                            <option <?php echo $ket; ?> value="<?php echo $data['kode_perumahan']; ?>"><?php echo $data['nama_perumahan']; ?></option>
-                        <?php
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-info" value="pilih">
-                </div>
-            </form>
-
-            <table class="table table-bordered table-hover">
-                <br>
-                <thead style="text-align:center ;">
-                    <tr>
-                        <th>No</th>
-                        <th style="width: 120px;">Kode Blok</th>
-                        <th style="width: 130px;">Nama Blok</th>
-                        <th style="width: 280px;">Aksi</th>
-                    </tr>
-                </thead>
+        <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="get">
+        <div class="form-group">
+            <label for="sel1">Select list:</label>
+            <select class="form-control" name="nama_blok">
+            <option value="first">Pilih Blok</option> <!-- Penambahan baris kode option-->
                 <?php
+                include "../../controller/booking/filter.php";
+                //Perintah sql untuk menampilkan semua data pada tabel perumahan
+                $sql = "select * from tbl_perumahan";
 
-
-                $hasil = mysqli_query($db, "SELECT * FROM detail_perumahan");
-                $no = 0;
+                $hasil = mysqli_query($db,$sql);
+                $no=0;
                 while ($data = mysqli_fetch_array($hasil)) {
-                    $no++;
-                ?>
-                    <tbody style="text-align: center;">
-                        <tr>
-                            <td><?= $no; ?></td>
-                            <td><?= $data['kode_blok'];   ?></td>
-                            <td><?= $data['nama'];   ?></td>
-                            <td>
-                                <a href="form_booking.php?id=<?= $data['id']; ?>" class="btn btn-info">Booking</a>
-                                <a href="" class="btn btn-danger" onclick="return confirm('Yakin mau menghapus <?= $data['kode_blok'] ?>?'">Delete</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                <?php
+                $no++;
+
+                $ket="";
+                if (isset($_GET['nama_blok'])) {
+                    $perumahan = trim($_GET['nama_blok']);
+
+                    if ($perumahan==$data['kode_perumahan'])
+                    {
+                        $ket="selected";
+                    }
                 }
                 ?>
-            </table>
-        </section>
-    </div>
+                <option <?php echo $ket; ?> value="<?php echo $data['kode_perumahan'];?>"><?php echo $data['nama_perumahan'];?></option>
+                <?php
+        }
+        ?>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-info" value="Pilih" name="submit"><!-- Penambahan baris kode name -->
+        </div>
+        </form>
+
+        <table class="table table-bordered table-hover">
+            <br>
+            <thead style="text-align:center ;">
+            <tr>
+                <th>No</th>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Blok</th>
+                <th>Aksi</th>
+            </tr>
+            </thead>
+            <?php
+
+            if(isset($_GET['submit'])){ // Penambahan baris kode if submit 
+                if (isset($_GET['nama_blok'])) {
+                    $perumahan=trim($_GET['nama_blok']);
+                    $sql="select * from tbl_detail_perumahan where blok='$perumahan' order by id asc";
+                }else {
+                    $sql="select * from tbl_detail_perumahan order by id asc";
+                }
+    
+                $hasil=mysqli_query($db,$sql);
+                $no=0;
+                while ($data = mysqli_fetch_array($hasil)) {
+                    $no++;
+    
+                    ?>
+                    <tbody style="text-align: center;">
+                    <tr>
+                        <td><?php echo $no;?></td>
+                        <td><?php echo $data["id"]; ?></td>
+                        <td><?php echo $data["nama"];   ?></td>
+                        <td ><?php echo $data["blok"];   ?></td>
+                        <td>
+                        <a href="form_booking.php?id=<?= $data['id']; ?>" class="btn btn-info">B</a>
+                            <input type="submit" class="btn btn-warning" value="U">
+                            <input type="submit" class="btn btn-danger" value="D">
+                            </td>
+                    </tr>
+                    </tbody>
+                    <?php
+                }
+            } else{ ?>
+
+                <div class="alert alert-danger" role=""alert><?php echo "Silahkan Pilih Blok"; ?></div> <!-- Penambahan baris kode alert -->
+                    
+            <?php } ?>
+
+            
+        </table>
+    </section>
+</div>
 </body>
 
 </html>
