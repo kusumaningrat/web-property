@@ -70,6 +70,12 @@ if(!isset($_SESSION["login"])){
                     <span>Data Booking</span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="pages/rumah.php">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>Data Rumah</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

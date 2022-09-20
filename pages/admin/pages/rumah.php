@@ -3,7 +3,7 @@ session_start();
 
 include('../../../database/db.php');
 
-$result = mysqli_query($db, "SELECT * FROM booking");
+$result = mysqli_query($db, "SELECT * FROM rumah");
 
 
 if (!isset($_SESSION["login"])) {
@@ -70,13 +70,13 @@ if (!isset($_SESSION["login"])) {
             </div>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="booking.php">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Data Booking</span></a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="rumah.php">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Data Rumah</span></a>
@@ -163,23 +163,26 @@ if (!isset($_SESSION["login"])) {
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <!-- <h1 class="h3 mb-2 text-gray-800">Data Booking</h1> -->
+                    <!-- <h1 class="h3 mb-2 text-gray-800">Data Rumah</h1> -->
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Data Booking</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Data Rumah</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#exampleModal">
+                                        Tambah Data
+                                    </button>
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama Konsumen</th>
-                                            <th>Alamat</th>
-                                            <th>No Handphone</th>
-                                            <th>Uang Booking</th>
-                                            <th>Kode Blok</th>
+                                            <th>Type Rumah</th>
+                                            <th>Blok Rumah</th>
+                                            <th>Luas Tanah</th>
+                                            <th>Harga</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -191,11 +194,11 @@ if (!isset($_SESSION["login"])) {
                                         <tbody>
                                             <tr>
                                                 <td style="text-align: center;"><?= $no; ?></td>
-                                                <td><?= $row['nama_konsumen'] ?></td>
-                                                <td><?= $row['alamat'] ?></td>
-                                                <td><?= $row['no_handphone'] ?></td>
-                                                <td><?= $row['uang_booking'] ?></td>
-                                                <td><?= $row['kode_blok'] ?></td>
+                                                <td><?= $row['type_rumah'] ?></td>
+                                                <td><?= $row['blok_rumah'] ?></td>
+                                                <td><?= $row['luas_tanah'] ?></td>
+                                                <td><?= $row['harga'] ?></td>
+                                                <td><?= $row['status'] ?></td>
                                                 <td>
                                                     <a href="#" class="btn btn-info">Lunas</a>
                                                     <a href="#" class="btn btn-danger">Detail</a>
@@ -213,6 +216,47 @@ if (!isset($_SESSION["login"])) {
 
             </div>
             <!-- End of Main Content -->
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="../../../controller/rumah/rumah.php" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="type_rumah" class="col-form-label">Type Rumah</label>
+                                    <input type="text" class="form-control" id="type_rumah" name="type_rumah" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="blok_rumah" class="col-form-label">Blok Rumah</label>
+                                    <input type="text" class="form-control" id="blok_rumah" name="blok_rumah" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="luas_tanah" class="col-form-label">Luas Tanah</label>
+                                    <input type="text" class="form-control" id="luas_tanah" name="luas_tanah" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="harga" class="col-form-label">Harga</label>
+                                    <input type="text" class="form-control" id="harga" name="harga" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="status" class="col-form-label">Status</label>
+                                    <input type="text" class="form-control" id="status" name="status" required>
+                                </div>
+                        </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-success" id="simpan" name="simpan">Simpan</button>
+                            </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
